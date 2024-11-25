@@ -1,0 +1,32 @@
+---
+- name: Clone the repository
+  hosts: all
+  become: true
+  tags: [clone-repo]
+
+  tasks:
+    - name: Clone the repository
+      ansible.builtin.git:
+        repo: "https://github.com/CUHKSZ-HPC/cluster-env.git"
+        dest: /tmp/cluster-env
+
+- name: Install Intel oneAPI HPC Toolkit
+  hosts: all
+  become: true
+  tags: [intel-oneapi-hpc-toolkit]
+
+  tasks:
+    - name: Install dependencies
+      ansible.builtin.apt:
+        pkg:
+          - gpg-agent
+          - wget
+        update_cache: yes
+
+    - name: Download keyring and add repository to system
+      ansible.builtin.command: /tmp/cluster-env/scripts/install_vtune.sh
+
+    - name: Install package intel-oneapi-hpc-toolkit
+      ansible.builtin.apt:
+        pkg: intel-oneapi-hpc-toolkit
+        update_cache: yes
