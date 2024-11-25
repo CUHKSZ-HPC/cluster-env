@@ -13,11 +13,11 @@ Manage the cluster environment with [Ansible](https://www.ansible.com/).
 sudo apt install pipx
 pipx ensurepath
 
-# Install Ansible
-pipx install --include-deps ansible
-
 # Reload ${PATH}
 source .bashrc
+
+# Install Ansible
+pipx install --index-url "https://mirrors.ustc.edu.cn/pypi/simple" --include-deps ansible
 ```
 
 #### Generate SSH key and copy it to the all machines
@@ -39,7 +39,6 @@ ssh-copy-id <username>@<target-machine>
 Required packages:
 
 - `python-apt`
-- `git`
 
 ## Usage
 
@@ -48,7 +47,7 @@ Required packages:
 **The following command will alter the target machines. Add `--check` to perform a dry-run to confirm what will be changed.**
 
 ```bash
-ansible-playbook -i hosts.ini playbook.yml -K --tags "<tag1>, <tag2>, ..."
+ansible-playbook -i hosts.ini playbook.yml -K --tags "clone-repo, <tag>, ..."
 ```
 
 ## Tags
@@ -57,7 +56,3 @@ ansible-playbook -i hosts.ini playbook.yml -K --tags "<tag1>, <tag2>, ..."
 | --- | --- | --- |
 | Yes | Clone this repository | `clone-repo` |
 | No | [Intel oneAPI HPC Toolkit](https://www.intel.com/content/www/us/en/developer/tools/oneapi/hpc-toolkit.html) | `intel-oneapi-hpc-toolkit` |
-| No | Telegraf-Influxdb-Grafana stack for monitoring | `tig-stack` |
-| No | [Grafana](https://grafana.com/) | `grafana` |
-| No | [InfluxDB](https://www.influxdata.com/) | `influxdb` |
-| No | [Telegraf](https://www.influxdata.com/) | `telegraf` |
