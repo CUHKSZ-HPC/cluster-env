@@ -5,6 +5,11 @@
   tags: [clone-repo]
 
   tasks:
+    - name: Install git
+      ansible.builtin.apt:
+        pkg: git
+        update_cache: yes
+
     - name: Clone the repository
       ansible.builtin.git:
         repo: "https://github.com/CUHKSZ-HPC/cluster-env.git"
@@ -14,6 +19,8 @@
   hosts: all
   become: true
   tags: [intel-oneapi-hpc-toolkit]
+  vars:
+    ONEAPI_VERSION: 2025.0
 
   tasks:
     - name: Install dependencies
@@ -21,12 +28,33 @@
         pkg:
           - gpg-agent
           - wget
+          - cmake
+          - pkg-config
+          - build-essential
         update_cache: yes
 
     - name: Download keyring and add repository to system
-      ansible.builtin.command: /tmp/cluster-env/scripts/install_vtune.sh
+      ansible.builtin.command:
+        cmd: bash /tmp/cluster-env/scripts/install_vtune.sh
 
     - name: Install package intel-oneapi-hpc-toolkit
       ansible.builtin.apt:
         pkg: intel-oneapi-hpc-toolkit
         update_cache: yes
+
+    - name: Set ptrace scope to 0
+      ansible.builtin.command:
+        cmd: sudo sed -i 's/kernel.yama.ptrace_scope = 1/kernel.yama.ptrace_scope = 0/' /etc/sysctl.d/10-ptrace.conf
+
+    - name: Clean sampling drivers
+      ansible.builtin.command:
+        cmd: sudo ./rmmod-sep -s
+        chdir: /opt/intel/oneapi/vtune/{{ ONEAPI_VERSION }}/sepdk/src
+    - name: Build sampling drivers
+      ansible.builtin.command:
+        cmd: sudo ./build-driver -ni -pu
+        chdir: /opt/intel/oneapi/vtune/{{ ONEAPI_VERSION }}/sepdk/src
+    - name: Install sampling drivers
+      ansible.builtin.command:
+        cmd: sudo ./insmod-sep -r -g vtune -pu
+        chdir: /opt/intel/oneapi/vtune/{{ ONEAPI_VERSION }}/sepdk/src
