@@ -1,7 +1,6 @@
 ---
 - name: Clone the repository
   hosts: all
-  strategy: free
   become: true
   tags: [clone-repo]
 
@@ -13,7 +12,6 @@
 
 - name: Install Intel oneAPI HPC Toolkit
   hosts: all
-  strategy: free
   become: true
   tags: [intel-oneapi-hpc-toolkit]
 
