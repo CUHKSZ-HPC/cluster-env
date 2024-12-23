@@ -17,6 +17,16 @@
         repo: "https://github.com/CUHKSZ-HPC/cluster-env.git"
         dest: "{{ REPO_DEST }}"
 
+- name: Install Slurm
+  hosts: compute
+  become: true
+  tags: [slurm]
+  tasks:
+    - name: Install slurm-client
+      ansible.builtin.apt:
+        pkg: slurm-client
+        update_cache: yes
+
 - name: Install Intel oneAPI HPC Toolkit
   hosts: all
   become: true

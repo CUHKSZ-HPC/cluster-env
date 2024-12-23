@@ -55,4 +55,5 @@ ansible-playbook -i hosts.ini playbook.yml -K --tags "clone-repo, <tag>, ..."
 | Required | Application | Tag |
 | --- | --- | --- |
 | Yes | Clone this repository | `clone-repo` |
+| No | [Slurm](https://slurm.schedmd.com/documentation.html) | `slurm` |
 | No | [Intel oneAPI HPC Toolkit](https://www.intel.com/content/www/us/en/developer/tools/oneapi/hpc-toolkit.html) | `intel-oneapi-hpc-toolkit` |
