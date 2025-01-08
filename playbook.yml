@@ -17,7 +17,7 @@
         repo: "https://github.com/CUHKSZ-HPC/cluster-env.git"
         dest: "{{ REPO_DEST }}"
 
-- name: Install Slurm
+- name: Install slurm-client
   hosts: compute
   become: true
   tags: [slurm]
@@ -69,7 +69,7 @@
         chdir: /opt/intel/oneapi/vtune/{{ ONEAPI_VERSION }}/sepdk/src
     - name: Install sampling drivers
       ansible.builtin.command:
-        cmd: sudo ./insmod-sep -r -g vtune -pu
+        cmd: sudo ./boot-script --install -g vtune -pu
         chdir: /opt/intel/oneapi/vtune/{{ ONEAPI_VERSION }}/sepdk/src
 
     - name: Add VTune to /etc/profile.d/oneapi.sh
