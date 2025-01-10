@@ -75,3 +75,35 @@
     - name: Add VTune to /etc/profile.d/oneapi.sh
       ansible.builtin.command:
         cmd: bash {{ REPO_DEST }}/scripts/oneapi/add_to_profile.sh
+
+- name: Install Telegraf
+  hosts: all
+  become: true
+  tags: [install-telegraf]
+  tasks:
+    - name: Install required packages
+      ansible.builtin.apt:
+        pkg:
+          - telegraf
+          - lm_sensors
+        update_cache: yes
+
+- name: Copy Slurm config file to common/tmp
+  hosts: master
+  become: true
+  tags: [copy-slurm-config]
+  vars:
+    REPO_DEST: /tmp/cluster-env
+  tasks:
+    - ansible.builtin.command:
+        cmd: bash {{ REPO_DEST }}/scripts/slurm/config/copy_to_common.sh
+
+- name: Copy Slurm config file to etc/slurm
+  hosts: compute
+  become: true
+  tags: [copy-slurm-config]
+  vars:
+    REPO_DEST: /tmp/cluster-env
+  tasks:
+    - ansible.builtin.command:
+        cmd: bash {{ REPO_DEST }}/scripts/slurm/config/copy_to_etc.sh
