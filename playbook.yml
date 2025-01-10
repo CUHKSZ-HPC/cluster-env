@@ -91,6 +91,7 @@
 - name: Copy Slurm config file to common/tmp
   hosts: master
   become: true
+  gather_facts: no
   tags: [copy-slurm-config]
   vars:
     REPO_DEST: /tmp/cluster-env
@@ -101,6 +102,7 @@
 - name: Copy Slurm config file to etc/slurm
   hosts: compute
   become: true
+  gather_facts: no
   tags: [copy-slurm-config]
   vars:
     REPO_DEST: /tmp/cluster-env
