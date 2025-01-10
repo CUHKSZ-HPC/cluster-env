@@ -2,6 +2,7 @@
 - name: Clone the repository
   hosts: all
   become: true
+  gather_facts: no
   tags: [clone-repo]
   vars:
     REPO_DEST: /tmp/cluster-env
