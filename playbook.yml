@@ -25,7 +25,6 @@
     - name: Install slurm-client
       ansible.builtin.apt:
         pkg: slurm-client
-        update_cache: yes
 
 - name: Install Intel oneAPI HPC Toolkit
   hosts: all
@@ -44,7 +43,6 @@
           - cmake
           - pkg-config
           - build-essential
-        update_cache: yes
 
     - name: Download keyring and add repository to system
       ansible.builtin.command:
@@ -86,7 +84,6 @@
         pkg:
           - telegraf
           - lm_sensors
-        update_cache: yes
 
 - name: Copy Slurm config file to common/tmp
   hosts: master
