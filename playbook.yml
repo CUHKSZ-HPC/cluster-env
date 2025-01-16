@@ -116,7 +116,6 @@
         pkg:
           - ca-certificates
           - curl
-        update_cache: yes
 
     - name: Change keyring permission
       ansible.builtin.command:
@@ -141,3 +140,13 @@
           - docker-buildx-plugin
           - docker-compose-plugin
         update_cache: yes
+
+- name: Reboot compute node
+  hosts: compute
+  become: true
+  tags: [reboot-compute]
+
+  tasks:
+    - name: Reboot compute node
+      ansible.builtin.command:
+        cmd: ( sleep 10 ; reboot ) & 
