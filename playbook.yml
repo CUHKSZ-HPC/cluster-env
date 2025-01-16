@@ -32,7 +32,6 @@
   tags: [intel-oneapi-hpc-toolkit]
   vars:
     REPO_DEST: /tmp/cluster-env
-    ONEAPI_VERSION: 2025.0
 
   tasks:
     - name: Install dependencies
@@ -60,15 +59,15 @@
     - name: Clean sampling drivers
       ansible.builtin.command:
         cmd: sudo ./rmmod-sep -s
-        chdir: /opt/intel/oneapi/vtune/{{ ONEAPI_VERSION }}/sepdk/src
+        chdir: /opt/intel/oneapi/vtune/latest/sepdk/src
     - name: Build sampling drivers
       ansible.builtin.command:
         cmd: sudo ./build-driver -ni -pu
-        chdir: /opt/intel/oneapi/vtune/{{ ONEAPI_VERSION }}/sepdk/src
+        chdir: /opt/intel/oneapi/vtune/latest/sepdk/src
     - name: Install sampling drivers
       ansible.builtin.command:
         cmd: sudo ./boot-script --install -g vtune -pu
-        chdir: /opt/intel/oneapi/vtune/{{ ONEAPI_VERSION }}/sepdk/src
+        chdir: /opt/intel/oneapi/vtune/latest/sepdk/src
 
     - name: Add VTune to /etc/profile.d/oneapi.sh
       ansible.builtin.command:
