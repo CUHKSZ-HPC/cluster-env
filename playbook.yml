@@ -103,3 +103,41 @@
   tasks:
     - ansible.builtin.command:
         cmd: bash {{ REPO_DEST }}/scripts/slurm/config/copy_to_etc.sh
+
+- name: Install docker
+  hosts: all
+  become: true
+  tags: [install-docker]
+  vars:
+    REPO_DEST: /tmp/cluster-env
+  tasks:
+    - name: Install dependencies
+      ansible.builtin.apt:
+        pkg:
+          - ca-certificates
+          - curl
+        update_cache: yes
+
+    - name: Change keyring permission
+      ansible.builtin.command:
+        cmd: install -m 0755 -d /etc/apt/keyrings
+    - name: Get docker key
+      ansible.builtin.command:
+        cmd: wget https://download.docker.com/linux/ubuntu/gpg -O /etc/apt/keyrings/docker.asc
+    - name: Change docker key permission
+      ansible.builtin.command:
+        cmd: chmod a+r /etc/apt/keyrings/docker.asc
+
+    - name: Add docker repository
+      ansible.builtin.command:
+        cmd: bash {{ REPO_DEST }}/scripts/docker/add_repo.sh
+
+    - name: Install docker
+      ansible.builtin.apt:
+        pkg:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        update_cache: yes
