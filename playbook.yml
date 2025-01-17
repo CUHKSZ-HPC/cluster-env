@@ -10,7 +10,6 @@
     - name: Install git
       ansible.builtin.apt:
         pkg: git
-        update_cache: yes
 
     - name: Clone the repository
       ansible.builtin.git:
@@ -149,4 +148,4 @@
   tasks:
     - name: Reboot compute node
       ansible.builtin.command:
-        cmd: ( sleep 10 ; reboot ) & 
+        cmd: sleep 10 ; reboot
