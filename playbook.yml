@@ -147,5 +147,4 @@
 
   tasks:
     - name: Reboot compute node
-      ansible.builtin.command:
-        cmd: sleep 10 ; reboot
+      ansible.builtin.reboot:
